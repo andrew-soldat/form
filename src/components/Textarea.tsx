@@ -1,29 +1,29 @@
-import React, {FC, FocusEvent, useState} from 'react'
+import React, {ChangeEvent, FC, FocusEvent} from 'react'
 
-// type InputProps = {
-//    name: string;
-// }
+type TextareaProps = {
+   label: string,
+   name: string,
+   value: string,
+   onBlur: (e: FocusEvent<HTMLTextAreaElement>) => void,
+   onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void,
+   isValue: boolean,
+   errorMessage: string
+}
 
-// const Textarea: FC = (props) => {
-//    const [isFocus, setIsFocus] = useState(false)
-//    const { label, errorMessage, onChange, ...inputProps } = props;
-//
-//    const handlerError = (e: FocusEvent<HTMLInputElement>) => {
-//       setIsFocus(true)
-//    }
-//
-//    return (
-//       <div className="feedback-form__line">
-//          <label className="feedback-form__label" htmlFor="name">{label}<span>*</span></label>
-//          <input
-//             {...inputProps}
-//             className="feedback-form__textarea"
-//             onBlur={handlerError}
-//             onChange={onChange}
-//          />
-//          {isFocus &&  <div className="feedback-form__text-error">{errorMessage}</div>}
-//       </div>
-//    );
-// }
+const Textarea: FC<TextareaProps> = ({label, name, value, onBlur, onChange, isValue, errorMessage}) => {
+   return (
+      <div className="feedback-form__line">
+         <label className="feedback-form__label">{label} <span>*</span></label>
+         <textarea className="feedback-form__textarea"
+                   name={name}
+                   value={value}
+                   onBlur={(e) => onBlur(e)}
+                   onChange={(e) => onChange(e)}
+         >
+         </textarea>
+         {(isValue && errorMessage) &&  <div className="feedback-form__text-error">{errorMessage}</div>}
+      </div>
+   );
+}
 
-// export default Textarea;
+export default Textarea;

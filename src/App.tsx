@@ -1,23 +1,31 @@
 import React, {useState, FocusEvent, ChangeEvent, useEffect, FormEvent} from 'react';
+import Input from "./components/Input";
+import Textarea from "./components/Textarea";
+import emailjs from "@emailjs/browser";
+
+const SERVICE_ID = "service_fxjzu6w";
+const TEMPLATE_ID = "template_ewrayq9";
+const USER_ID = "QhtEPVfIjES0CMQzV";
 
 const App = () => {
    const [name, setName] = useState("")
    const [isName, setIsName] = useState(false)
-   const [nameError, setNameError] = useState("Обязательно поле")
+   const [nameError, setNameError] = useState("Обязательное поле")
    const [email, setEmail] = useState("")
    const [isEmail, setIsEmail] = useState(false)
-   const [emailError, setEmailError] = useState("Обязательно поле")
+   const [emailError, setEmailError] = useState("Обязательное поле")
    const [phone, setPhone] = useState("")
    const [isPhone, setIsPhone] = useState(false)
-   const [phoneError, setPhoneError] = useState("Обязательно поле")
-   const [date, setDate] = useState("")
-   const [isDate, setIsDate] = useState(false)
-   const [dateError, setDateError] = useState("Обязательно поле")
+   const [phoneError, setPhoneError] = useState("Обязательное поле")
+   const [birthday, setBirthday] = useState("")
+   const [isBirthday, setIsBirthday] = useState(false)
+   const [birthdayError, setBirthdayError] = useState("Обязательное поле")
    const [message, setMessage] = useState("")
    const [isMessage, setIsMessage] = useState(false)
-   const [messageError, setMessageError] = useState("Обязательно поле")
+   const [messageError, setMessageError] = useState("Обязательное поле")
    const [isValidForm, setIsValidForm] = useState(false)
    const [isSuccessForm, setIsSuccessForm] = useState(false)
+   const hasError = nameError || emailError || phoneError || birthdayError || messageError
 
    const errorHandler = (e: FocusEvent<HTMLInputElement> | FocusEvent<HTMLTextAreaElement>) => {
       switch (e.target.name) {
@@ -33,8 +41,8 @@ const App = () => {
             setIsPhone(true)
             break
 
-         case "date":
-            setIsDate(true)
+         case "birthday":
+            setIsBirthday(true)
             break
 
          case "message":
@@ -58,7 +66,7 @@ const App = () => {
       setEmail(e.target.value)
       const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,8})+$/
       if (!regex.test(e.target.value)) {
-         setEmailError("Не корректный email")
+         setEmailError("Некорректный email")
       } else {
          setEmailError('')
       }
@@ -66,13 +74,6 @@ const App = () => {
 
    const phoneHandler = (e: ChangeEvent<HTMLInputElement>) => {
       setPhone(e.target.value)
-      // const regex = /^\+?(\d{7})?[- .]?\(?(?:\d\d\d)\)?[- .]?\d\d\d[- .]?\d\d[- .]?\d\d[- .]$/
-      // // 7 (495) 109-98-90
-      // if (!regex.test(e.target.value)) {
-      //    setPhoneError("Неверный номер телефона")
-      // } else {
-      //    setPhoneError('')
-      // }
       if (!e.target.value) {
          setPhoneError("Неверный номер телефона")
       } else {
@@ -80,12 +81,12 @@ const App = () => {
       }
    }
 
-   const dateHandler = (e: ChangeEvent<HTMLInputElement>) => {
-      setDate(e.target.value)
+   const birthdayHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      setBirthday(e.target.value)
       if (!e.target.value) {
-         setDateError("Введите дату рождения")
+         setBirthdayError("Введите дату рождения")
       } else {
-         setDateError('')
+         setBirthdayError('')
       }
    }
 
@@ -102,88 +103,98 @@ const App = () => {
       }
    }
 
-   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+   const resetForm = () => {
+      setName('')
+      setEmail('')
+      setPhone('')
+      setBirthday('')
+      setMessage('')
+   }
+
+   const handleSubmit = (e: any) => {
       e.preventDefault()
 
       if (isValidForm) {
+         resetForm()
          setIsValidForm(false)
-         setName('')
-         setEmail('')
-         setPhone('')
-         setDate('')
-         setMessage('')
-         const url = ''
-         const requestOptions = {};
-         fetch(url, requestOptions)
-            .then(response => alert('Форма успешна отправлена'))
-            .catch(error => alert('Ошибка отправки формы'))
-         setTimeout(() => {
-            setIsSuccessForm(true)
-         },2000)
+
+         emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target, USER_ID)
+            .then(
+               (result) => {
+                  console.log(result.text);
+                  console.log('Форма успешно отправлена!')
+                  setIsSuccessForm(true)
+               },
+               ((error) => {
+                  console.log(error.text);
+                  console.log('Ошибка отправки формы')
+               })
+            )
 
          setTimeout(() => {
             setIsSuccessForm(false)
-         },10000)
+         },5000)
       }
    }
 
    useEffect(() => {
-      if (nameError || emailError || phoneError || dateError || messageError) {
+      if (!!hasError) {
          setIsValidForm(false)
       } else {
          setIsValidForm(true)
       }
 
-   }, [nameError, emailError, phoneError, dateError, messageError])
+   }, [hasError])
 
    return (
       <div className="feedback-form">
          <h1 className="feedback-form__title">Форма обратной связи</h1>
          <form onSubmit={handleSubmit} id="feedback-form" action="#" className="feedback-form__body">
-            <div className="feedback-form__line">
-               <label className="feedback-form__label">Имя Фамилия <span>*</span></label>
-               <input type="text" name="name" className="feedback-form__input"
-                      value={name}
-                      onBlur={(e) => errorHandler(e)}
-                      onChange={(e) => nameHandler(e)} />
-               {(isName && nameError) &&  <div className="feedback-form__text-error">{nameError}</div>}
-            </div>
-            <div className="feedback-form__line">
-               <label className="feedback-form__label">Email <span>*</span></label>
-               <input type="text" name="email" className="feedback-form__input"
-                      value={email}
-                      onBlur={(e) => errorHandler(e)}
-                      onChange={(e) => emailHandler(e)} />
-               {(isEmail && emailError) &&  <div className="feedback-form__text-error">{emailError}</div>}
-            </div>
-            <div className="feedback-form__line">
-               <label className="feedback-form__label">Номер телефона <span>*</span></label>
-               <input type="tel" name="phone" className="feedback-form__input"
-                      placeholder="+7 (495) 109-98-90"
-                      value={phone}
-                      onBlur={e => errorHandler(e)}
-                      onChange={(e) => phoneHandler(e)} />
-               {(isPhone && phoneError) &&  <div className="feedback-form__text-error">{phoneError}</div>}
-            </div>
-            <div className="feedback-form__line">
-               <label className="feedback-form__label">Дата рождения <span>*</span></label>
-               <input type="date" name="date" className="feedback-form__input"
-                      value={date}
-                      onBlur={e => errorHandler(e)}
-                      onChange={(e) => dateHandler(e)} />
-               {(isDate && dateError) &&  <div className="feedback-form__text-error">{dateError}</div>}
-            </div>
-            <div className="feedback-form__line">
-               <label className="feedback-form__label">Сообщение <span>*</span></label>
-               <textarea name="message" className="feedback-form__textarea"
-                         value={message}
-                         onBlur={(e) => errorHandler(e)}
-                         onChange={(e) => messageHandler(e)} >
-               </textarea>
-               {(isMessage && messageError) &&  <div className="feedback-form__text-error">{messageError}</div>}
-            </div>
+            <Input label="Имя Фамилия"
+                   name="name"
+                   type="text"
+                   value={name}
+                   onBlur={(e) => errorHandler(e)}
+                   onChange={(e) => nameHandler(e)}
+                   isValue={isName}
+                   errorMessage={nameError}
+            />
+            <Input label="Email"
+                   name="email"
+                   type="text"
+                   value={email}
+                   onBlur={errorHandler}
+                   onChange={emailHandler}
+                   isValue={isEmail}
+                   errorMessage={emailError}
+            />
+            <Input label="Номер телефона"
+                   name="phone"
+                   type="tel"
+                   value={phone}
+                   onBlur={errorHandler}
+                   onChange={phoneHandler}
+                   isValue={isPhone}
+                   errorMessage={phoneError}
+            />
+            <Input label="Дата рождения"
+                   name="birthday"
+                   type="date"
+                   value={birthday}
+                   onBlur={errorHandler}
+                   onChange={birthdayHandler}
+                   isValue={isBirthday}
+                   errorMessage={birthdayError}
+            />
+            <Textarea label="Сообщение"
+                      name="message"
+                      value={message}
+                      onBlur={errorHandler}
+                      onChange={messageHandler}
+                      isValue={isMessage}
+                      errorMessage={messageError} />
             <button disabled={!isValidForm} className="feedback-form__button" type="submit">
-               Далее
+               {isSuccessForm ? 'Отправка...' : 'Отправить'}
             </button>
             {isSuccessForm && <div className="feedback-form__success">Форма успешно отправлена!</div>}
          </form>

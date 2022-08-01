@@ -1,34 +1,29 @@
-import {ChangeEvent, FC, FocusEvent, useState} from 'react'
-// import {InputType} from "../App";
+import React, {ChangeEvent, FC, FocusEvent} from 'react'
 
-// type InputProps = {
-//    input: InputType,
-//    value: string,
-//    label: string,
-//    onChange: string,
-//    errorMessage: string
-// }
-//
-// const Input: FC = (props: any) => {
-//    const [isFocus, setIsFocus] = useState(false)
-//    const { label, errorMessage, onChange, ...inputProps } = props;
-//
-//    const handlerError = (e: FocusEvent<HTMLInputElement>) => {
-//       setIsFocus(true)
-//    }
-//
-//    return (
-//       <div className="feedback-form__line">
-//          <label className="feedback-form__label" htmlFor="name">{label}<span>*</span></label>
-//          <input
-//             {...inputProps}
-//             className="feedback-form__input"
-//             onBlur={handlerError}
-//             onChange={onChange}
-//          />
-//          {isFocus &&  <div className="feedback-form__text-error">{errorMessage}</div>}
-//       </div>
-//    );
-// }
+type InputProps = {
+   label: string,
+   name: string,
+   type: string,
+   value: string,
+   onBlur: (e: FocusEvent<HTMLInputElement>) => void,
+   onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+   isValue: boolean,
+   errorMessage: string
+}
 
-// export default Input;
+const Input: FC<InputProps> = ({label, name, type, value, onBlur, onChange, isValue, errorMessage}) => {
+   return (
+      <div className="feedback-form__line">
+         <label className="feedback-form__label">{label} <span>*</span></label>
+         <input className="feedback-form__input"
+                name={name}
+                type={type}
+                value={value}
+                onBlur={(e) => onBlur(e)}
+                onChange={(e) => onChange(e)} />
+         {(isValue && errorMessage) &&  <div className="feedback-form__text-error">{errorMessage}</div>}
+      </div>
+   );
+}
+
+export default Input;
