@@ -7,6 +7,8 @@
 *,
 *:before,
 *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -102,14 +104,8 @@ h6 {
 }
 
 .feedback-form {
-  margin: 20px auto 0;
+  margin: 20px auto 20px;
   width: 400px;
-}
-@media (max-width: 992px) {
-  .feedback-form {
-    width: 100%;
-    max-width: 397px;
-  }
 }
 .feedback-form__title {
   margin: 0px 0px 40px 0px;
@@ -119,15 +115,9 @@ h6 {
 .feedback-form__line {
   margin-bottom: 25px;
 }
-.feedback-form__text-error {
-  display: none;
-  margin: 10px 0px 0px 0px;
-  font-size: 13px;
-  color: #000000;
-}
 .feedback-form__label {
   display: inline-block;
-  margin: 0px 0px 13px 0px;
+  margin: 0px 0px 10px 0px;
   font-size: 13px;
   color: #777E90;
 }
@@ -149,15 +139,33 @@ h6 {
 .feedback-form__input:focus {
   border-color: #cecece;
 }
-.feedback-form__input._error {
-  border-color: #D11A2A;
+.feedback-form__text-error {
+  margin: 10px 0px 0px 0px;
+  font-size: 13px;
+  color: #D11A2A;
+}
+.feedback-form__textarea {
+  padding: 10px 20px;
+  width: 100%;
+  min-height: 150px;
+  font-size: 14px;
+  color: #23262F;
+  background-color: #F4F5F6;
+  border: 1px solid #F4F5F6;
+  border-radius: 8px;
+  transition: all 0.3s ease 0s;
+}
+.feedback-form__textarea:focus {
+  border-color: #cecece;
 }
 .feedback-form__button {
   width: 100%;
   max-width: 397px;
   height: 56px;
-  display: inline-block;
-  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   line-height: 56px;
@@ -167,6 +175,11 @@ h6 {
   cursor: pointer;
   box-shadow: 0px 20px 25px rgba(209, 26, 42, 0.15);
   transition: all 0.3s ease 0s;
+}
+.feedback-form__button img {
+  margin-right: 10px;
+  width: 40px;
+  height: 40px;
 }
 .feedback-form__button:hover {
   background-color: #E02535;
@@ -181,6 +194,23 @@ h6 {
   cursor: not-allowed;
 }
 
-.feedback-form__line._error > .feedback-form__text-error {
-  display: block;
+.alert-content {
+  margin: 30px 0px 0px 0px;
+  width: 100%;
+  padding: 20px;
+  background-color: #F4F5F6;
+  border: 1px solid #cecece;
+  border-radius: 8px;
 }
+.alert-content__title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #282828;
+  font-weight: 700;
+}
+.alert-content__message {
+  font-size: 16px;
+  color: #777E90;
+}
+
+/*# sourceMappingURL=index.css.map */
