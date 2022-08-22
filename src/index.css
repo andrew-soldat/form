@@ -211,19 +211,18 @@ input:-webkit-autofill:active {
   margin: 30px 0px 0px 0px;
   width: 100%;
   padding: 20px;
-  background-color: #F4F5F6;
-  border: 1px solid #cecece;
+  background-color: #E95933;
   border-radius: 8px;
 }
 .alert-content__title {
   margin-bottom: 10px;
   font-size: 20px;
-  color: #282828;
+  color: #F3EECC;
   font-weight: 700;
 }
 .alert-content__message {
   font-size: 16px;
-  color: #777E90;
+  color: #DCE3C9;
 }
 
 /*# sourceMappingURL=index.css.map */
