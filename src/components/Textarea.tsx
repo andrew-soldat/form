@@ -14,13 +14,13 @@ const Textarea: FC<TextareaProps> = (props) => {
    const {label, isValue, error, ...textareaProps} = props
 
    return (
-      <div className="feedback-form__line">
+      <div className="textarea">
          <label className="feedback-form__label">{label} <span>*</span></label>
          <textarea className="feedback-form__textarea"
                    {...textareaProps}
          >
          </textarea>
-         {(isValue && error) && <div className="feedback-form__text-error">{error}</div>}
+         {(isValue && error) && <div className="text-error">{error}</div>}
       </div>
    );
 }

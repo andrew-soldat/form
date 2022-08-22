@@ -198,7 +198,7 @@ const Form: FC = () => {
                       onChange={(e) => handleChange(e)}
                       isValue={isValues.message}
                       error={errors.message}/>
-            <button disabled={!isValidForm} className="feedback-form__button" type="submit">
+            <button disabled={!isValidForm} className="button-submit" type="submit">
                {isPreloader && <img src={require('../assets/img/preloader.gif')} alt="preloader" />}
                Отправить
             </button>

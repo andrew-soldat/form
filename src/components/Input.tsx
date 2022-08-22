@@ -15,11 +15,10 @@ const Input: FC<InputProps> = (props) => {
    const {label, isValue, error, ...inputProps} = props
 
    return (
-      <div className="feedback-form__line">
-         <label className="feedback-form__label">{label} <span>*</span></label>
-         <input className="feedback-form__input"
-                {...inputProps} />
-         {(isValue && error) && <div className="feedback-form__text-error">{error}</div>}
+      <div className="input">
+         <label>{label} <span>*</span></label>
+         <input {...inputProps} />
+         {(isValue && error) && <div className="text-error">{error}</div>}
       </div>
    );
 }
